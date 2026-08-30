@@ -34,16 +34,13 @@ _ENV_API_KEY = os.getenv("OPENAI_API_KEY", "")
 app = FastAPI(title="Debate Agent API", version="0.1.0")
 
 # ── CORS ───────────────────────────────────────────────────────────────────────
-# In development: only localhost:5173 (Vite).
-# In production:  set ALLOWED_ORIGINS in Railway dashboard as a comma-separated
-#                 list, e.g. "https://debate-agent.vercel.app"
-_raw_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173")
-allowed_origins = [o.strip() for o in _raw_origins.split(",") if o.strip()]
-
+# Allow all origins — safe because auth is in the request body (the OpenAI key),
+# not in cookies. allow_credentials must be False when allow_origins=["*"].
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins,
-    allow_methods=["POST", "GET", "OPTIONS"],
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 

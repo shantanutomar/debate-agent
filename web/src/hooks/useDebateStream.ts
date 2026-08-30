@@ -26,7 +26,11 @@ import type {
 
 // In development this falls back to localhost.
 // Set VITE_API_URL in Vercel dashboard to your Railway backend URL.
-const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
+// Must include the protocol, e.g. https://your-app.up.railway.app
+const _rawApiUrl = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
+const API_URL = _rawApiUrl.startsWith("http")
+  ? _rawApiUrl.replace(/\/$/, "")          // strip accidental trailing slash
+  : `https://${_rawApiUrl.replace(/\/$/, "")}`; // add protocol if forgotten
 
 const INITIAL_STATE: DebateState = { status: "idle" };
 
