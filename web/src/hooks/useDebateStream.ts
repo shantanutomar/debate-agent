@@ -24,7 +24,9 @@ import type {
   ToolCallRecord,
 } from "../types/debate";
 
-const API_URL = "http://localhost:8000";
+// In development this falls back to localhost.
+// Set VITE_API_URL in Vercel dashboard to your Railway backend URL.
+const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
 
 const INITIAL_STATE: DebateState = { status: "idle" };
 
